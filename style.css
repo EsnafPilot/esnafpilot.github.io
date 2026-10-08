@@ -22,7 +22,7 @@ main{padding-block:40px 56px}
 .doc h1{font-size:clamp(26px,4vw,34px);line-height:1.2;letter-spacing:-.02em;color:var(--ink);margin:0 0 6px;text-wrap:balance}
 .doc h1 + p{color:var(--muted);font-size:14px;margin-top:0}
 .doc h2{font-size:19px;color:var(--ink);margin:34px 0 8px;letter-spacing:-.01em}
-.doc ul{padding-left:22px}
+.doc ul,.doc ol{padding-left:22px}
 .doc li{margin:4px 0}
 .tbl{overflow-x:auto;margin:14px 0}
 .doc table{border-collapse:collapse;width:100%;font-size:14px;min-width:520px}
