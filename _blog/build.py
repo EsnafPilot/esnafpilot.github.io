@@ -120,7 +120,7 @@ def main():
 
     today = date.today().isoformat()
     urls = [(SITE + "/", today), (SITE + "/blog/", posts[0]["date"] if posts else today),
-            (SITE + "/gizlilik", "2026-10-05"), (SITE + "/kosullar", "2026-10-05")]
+            (SITE + "/gizlilik", "2026-10-05"), (SITE + "/kosullar", "2026-10-05"), (SITE + "/hesap-sil", "2026-10-08")]
     urls += [(f"{SITE}/blog/{p['slug']}", p.get("updated", p["date"])) for p in posts]
     sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
     sm += "".join(f"  <url><loc>{u}</loc><lastmod>{d}</lastmod></url>\n" for u, d in urls) + "</urlset>\n"
