@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>E-posta Onayı · EsnafPilot</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#4F46E5">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="/style.css">
+<style>
+.confirm{max-width:520px;margin:48px auto;background:#fff;border:1px solid #E2E8F0;border-radius:24px;padding:40px 28px;text-align:center;box-shadow:0 12px 40px rgba(15,23,42,.06)}
+.confirm .icon{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:34px}
+.confirm .ok{background:#D1FAE5;color:#10B981}
+.confirm .warn{background:#FEF3C7;color:#F59E0B}
+.confirm h1{font-size:26px;line-height:1.25;margin:0 0 12px;color:#1E293B}
+.confirm p{color:#475569;line-height:1.6;margin:0 0 12px}
+.confirm .btn{display:inline-block;margin-top:16px;background:#4F46E5;color:#fff;text-decoration:none;font-weight:700;padding:14px 26px;border-radius:12px}
+.confirm .muted{font-size:14px;color:#64748B;margin-top:20px}
+.state{display:none}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/logo.png" alt="" width="34" height="34"><span>Esnaf<b>Pilot</b></span></a>
+  <nav><a href="/blog/">Blog</a><a href="/gizlilik">Gizlilik</a><a href="/kosullar">Koşullar</a><a href="mailto:destek@esnafpilot.com">İletişim</a></nav>
+</div></header>
+<main><div class="wrap">
+<section class="confirm">
+  <div class="state" id="s-ok">
+    <div class="icon ok">✓</div>
+    <h1>E-postan onaylandı 🎉</h1>
+    <p>Hesabın hazır. EsnafPilot uygulamasına dönüp e-posta adresin ve şifrenle giriş yapabilirsin.</p>
+    <a class="btn" href="esnafpilot://esnafpilot.com/loginPage">Uygulamayı aç</a>
+    <p class="muted">Buton çalışmazsa uygulamayı telefonundan kendin açman yeterli.</p>
+  </div>
+  <div class="state" id="s-expired">
+    <div class="icon warn">!</div>
+    <h1>Bağlantının süresi dolmuş</h1>
+    <p>Bu onay bağlantısı artık geçerli değil ya da daha önce kullanılmış.</p>
+    <p>Uygulamada giriş yapmayı dene. Hesabın henüz onaylı değilse <strong>“Onay e-postasını tekrar gönder”</strong> seçeneğiyle yeni bir bağlantı isteyebilirsin.</p>
+    <a class="btn" href="esnafpilot://esnafpilot.com/loginPage">Uygulamayı aç</a>
+  </div>
+  <div class="state" id="s-error">
+    <div class="icon warn">!</div>
+    <h1>Bir sorun oluştu</h1>
+    <p>E-posta onayı tamamlanamadı. Uygulamada giriş yapmayı dene; sorun devam ederse bize yaz.</p>
+    <a class="btn" href="mailto:destek@esnafpilot.com?subject=E-posta%20onay%C4%B1%20sorunu">destek@esnafpilot.com</a>
+  </div>
+</section>
+</div></main>
+<footer><div class="wrap">
+  <span>© 2026 EsnafPilot</span>
+  <nav><a href="/blog/">Blog</a><a href="/gizlilik">Gizlilik Politikası</a><a href="/kosullar">Kullanım Koşulları</a><a href="/hesap-sil">Hesap Silme</a><a href="https://www.instagram.com/esnafpilotcom/" rel="noopener">Instagram</a><a href="mailto:destek@esnafpilot.com">destek@esnafpilot.com</a></nav>
+</div></footer>
+<script>
+(function () {
+  var raw = (location.hash || '').replace(/^#/, '') + '&' + (location.search || '').replace(/^\?/, '');
+  var p = new URLSearchParams(raw);
+  var code = p.get('error_code') || '';
+  var err = p.get('error') || '';
+  var id = 's-ok';
+  if (code === 'otp_expired' || /expired|invalid/i.test(p.get('error_description') || '')) id = 's-expired';
+  else if (err || code) id = 's-error';
+  document.getElementById(id).style.display = 'block';
+  // Adres çubuğundaki token/kod bilgilerini temizle (sayfa oturum açmaz).
+  if (location.hash || location.search) {
+    try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  }
+})();
+</script>
+</body>
+</html>
