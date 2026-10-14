@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Şifre Yenileme · EsnafPilot</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#4F46E5">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap">
+<link rel="stylesheet" href="/style.css">
+<style>
+.confirm{max-width:520px;margin:48px auto;background:#fff;border:1px solid #E2E8F0;border-radius:24px;padding:40px 28px;text-align:center;box-shadow:0 12px 40px rgba(15,23,42,.06)}
+.confirm .icon{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:34px}
+.confirm .ok{background:#D1FAE5;color:#10B981}
+.confirm .warn{background:#FEF3C7;color:#F59E0B}
+.confirm .key{background:#E0E7FF;color:#4F46E5}
+.confirm h1{font-size:26px;line-height:1.25;margin:0 0 12px;color:#1E293B}
+.confirm p{color:#475569;line-height:1.6;margin:0 0 12px}
+.confirm .btn{display:inline-block;margin-top:16px;background:#4F46E5;color:#fff;text-decoration:none;font-weight:700;padding:14px 26px;border-radius:12px;border:0;font:inherit;font-weight:700;cursor:pointer}
+.confirm .btn[disabled]{opacity:.6;cursor:default}
+.confirm .muted{font-size:14px;color:#64748B;margin-top:20px}
+.state{display:none}
+form{text-align:left;margin-top:8px}
+label{display:block;font-weight:600;color:#1E293B;font-size:14px;margin:16px 0 6px}
+.field{position:relative}
+input[type=password],input[type=text]{width:100%;box-sizing:border-box;padding:13px 48px 13px 14px;border:1px solid #E2E8F0;border-radius:12px;font:inherit;font-size:16px;color:#1E293B;background:#F8FAFC}
+input:focus{outline:none;border-color:#4F46E5;background:#fff;box-shadow:0 0 0 3px rgba(79,70,229,.15)}
+.toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;color:#64748B;font:inherit;font-size:13px;font-weight:600;padding:8px;cursor:pointer}
+.rules{list-style:none;padding:0;margin:12px 0 0;font-size:13px;color:#64748B}
+.rules li{margin:4px 0}
+.rules li::before{content:"○ ";color:#94A3B8}
+.rules li.met{color:#10B981}
+.rules li.met::before{content:"✓ ";color:#10B981}
+.msg{display:none;margin-top:14px;padding:12px 14px;border-radius:12px;background:#FEF2F2;color:#B91C1C;font-size:14px;line-height:1.5}
+form .btn{width:100%;margin-top:22px}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="/"><img src="/logo.png" alt="" width="34" height="34"><span>Esnaf<b>Pilot</b></span></a>
+  <nav><a href="/blog/">Blog</a><a href="/gizlilik">Gizlilik</a><a href="/kosullar">Koşullar</a><a href="mailto:destek@esnafpilot.com">İletişim</a></nav>
+</div></header>
+<main><div class="wrap">
+<section class="confirm">
+  <div class="state" id="s-loading">
+    <div class="icon key">🔑</div>
+    <h1>Bağlantı kontrol ediliyor…</h1>
+    <p>Lütfen birkaç saniye bekle.</p>
+  </div>
+
+  <div class="state" id="s-form">
+    <div class="icon key">🔑</div>
+    <h1>Yeni şifreni belirle</h1>
+    <p>Hesabın için yeni bir şifre oluştur.</p>
+    <form id="f" novalidate>
+      <label for="p1">Yeni şifre</label>
+      <div class="field">
+        <input id="p1" type="password" autocomplete="new-password" required>
+        <button type="button" class="toggle" data-for="p1">Göster</button>
+      </div>
+      <ul class="rules">
+        <li id="r-len">En az 8 karakter</li>
+        <li id="r-low">En az bir küçük harf</li>
+        <li id="r-up">En az bir büyük harf</li>
+        <li id="r-dig">En az bir rakam</li>
+      </ul>
+      <label for="p2">Yeni şifre (tekrar)</label>
+      <div class="field">
+        <input id="p2" type="password" autocomplete="new-password" required>
+        <button type="button" class="toggle" data-for="p2">Göster</button>
+      </div>
+      <div class="msg" id="msg" role="alert"></div>
+      <button class="btn" id="save" type="submit">Şifremi güncelle</button>
+    </form>
+  </div>
+
+  <div class="state" id="s-ok">
+    <div class="icon ok">✓</div>
+    <h1>Şifren güncellendi 🎉</h1>
+    <p>EsnafPilot uygulamasına dönüp e-posta adresin ve yeni şifrenle giriş yapabilirsin.</p>
+    <a class="btn" href="esnafpilot://esnafpilot.com/loginPage">Uygulamayı aç</a>
+    <p class="muted">Buton çalışmazsa uygulamayı telefonundan kendin açman yeterli.</p>
+  </div>
+
+  <div class="state" id="s-expired">
+    <div class="icon warn">!</div>
+    <h1>Bağlantının süresi dolmuş</h1>
+    <p>Bu şifre yenileme bağlantısı artık geçerli değil ya da daha önce kullanılmış.</p>
+    <p>Uygulamadaki <strong>“Şifremi Unuttum”</strong> seçeneğiyle yeni bir bağlantı isteyebilirsin. Her zaman en son gelen e-postadaki bağlantıyı kullan.</p>
+    <a class="btn" href="esnafpilot://esnafpilot.com/loginPage">Uygulamayı aç</a>
+  </div>
+
+  <div class="state" id="s-error">
+    <div class="icon warn">!</div>
+    <h1>Bir sorun oluştu</h1>
+    <p>Şifre yenileme sayfası şu an açılamadı. Uygulamadan yeni bir bağlantı isteyip tekrar dene; sorun devam ederse bize yaz.</p>
+    <a class="btn" href="mailto:destek@esnafpilot.com?subject=%C5%9Eifre%20yenileme%20sorunu">destek@esnafpilot.com</a>
+  </div>
+</section>
+</div></main>
+<footer><div class="wrap">
+  <span>© 2026 EsnafPilot</span>
+  <nav><a href="/blog/">Blog</a><a href="/gizlilik">Gizlilik Politikası</a><a href="/kosullar">Kullanım Koşulları</a><a href="/hesap-sil">Hesap Silme</a><a href="https://www.instagram.com/esnafpilotcom/" rel="noopener">Instagram</a><a href="mailto:destek@esnafpilot.com">destek@esnafpilot.com</a></nav>
+</div></footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+(function () {
+  // Açık (publishable) anahtar: tarayıcıda kullanılmak üzere tasarlanmıştır, gizli değildir.
+  var SUPABASE_URL = 'https://enxrwgyrqcwgajfcfuxk.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_PiiaUFuzk8GJgWnlBtvR-w_wI97naqe';
+
+  function show(id) {
+    ['s-loading', 's-form', 's-ok', 's-expired', 's-error'].forEach(function (s) {
+      document.getElementById(s).style.display = (s === id) ? 'block' : 'none';
+    });
+  }
+
+  var hash = new URLSearchParams((location.hash || '').replace(/^#/, ''));
+  var query = new URLSearchParams((location.search || '').replace(/^\?/, ''));
+  var errCode = hash.get('error_code') || query.get('error_code') || '';
+  var errAny = hash.get('error') || query.get('error') || '';
+  var errDesc = hash.get('error_description') || query.get('error_description') || '';
+  var accessToken = hash.get('access_token');
+  var refreshToken = hash.get('refresh_token');
+  var type = hash.get('type');
+
+  // Adres çubuğundaki token bilgilerini hemen temizle.
+  if (location.hash || location.search) {
+    try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  }
+
+  if (errCode === 'otp_expired' || /expired|invalid/i.test(errDesc)) { show('s-expired'); return; }
+  if (errAny || errCode) { show('s-error'); return; }
+  if (!accessToken || !refreshToken || type !== 'recovery') { show('s-expired'); return; }
+  if (!window.supabase || !window.supabase.createClient) { show('s-error'); return; }
+
+  show('s-loading');
+
+  var client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false }
+  });
+
+  client.auth.setSession({ access_token: accessToken, refresh_token: refreshToken }).then(function (res) {
+    if (res.error || !res.data || !res.data.session) {
+      show(/expired|invalid|not found/i.test((res.error && res.error.message) || '') ? 's-expired' : 's-error');
+      return;
+    }
+    show('s-form');
+  }).catch(function () { show('s-error'); });
+
+  var p1 = document.getElementById('p1');
+  var p2 = document.getElementById('p2');
+  var msg = document.getElementById('msg');
+  var save = document.getElementById('save');
+
+  function checks(v) {
+    return { len: v.length >= 8, low: /[a-zçğıöşü]/.test(v), up: /[A-ZÇĞİÖŞÜ]/.test(v), dig: /[0-9]/.test(v) };
+  }
+  function asciiChecks(v) {
+    // Supabase kuralı yalnızca İngilizce harfleri sayar.
+    return { low: /[a-z]/.test(v), up: /[A-Z]/.test(v) };
+  }
+  function paint() {
+    var c = checks(p1.value);
+    document.getElementById('r-len').className = c.len ? 'met' : '';
+    document.getElementById('r-low').className = c.low ? 'met' : '';
+    document.getElementById('r-up').className = c.up ? 'met' : '';
+    document.getElementById('r-dig').className = c.dig ? 'met' : '';
+  }
+  function fail(text) { msg.textContent = text; msg.style.display = 'block'; }
+
+  p1.addEventListener('input', function () { paint(); msg.style.display = 'none'; });
+  p2.addEventListener('input', function () { msg.style.display = 'none'; });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.toggle'), function (b) {
+    b.addEventListener('click', function () {
+      var i = document.getElementById(b.getAttribute('data-for'));
+      var hidden = i.type === 'password';
+      i.type = hidden ? 'text' : 'password';
+      b.textContent = hidden ? 'Gizle' : 'Göster';
+    });
+  });
+
+  document.getElementById('f').addEventListener('submit', function (e) {
+    e.preventDefault();
+    msg.style.display = 'none';
+    var v = p1.value;
+    var c = checks(v), a = asciiChecks(v);
+    if (!c.len || !c.dig || !a.low || !a.up) {
+      fail('Şifren en az 8 karakter olmalı ve en az bir küçük harf, bir büyük harf ve bir rakam içermeli. (Harf kuralı için İngilizce harfler sayılır: ç, ğ, ı, ö, ş, ü dışında en az bir küçük ve bir büyük harf kullan.)');
+      return;
+    }
+    if (v !== p2.value) { fail('Girdiğin iki şifre aynı değil.'); return; }
+
+    save.disabled = true;
+    save.textContent = 'Güncelleniyor…';
+    client.auth.updateUser({ password: v }).then(function (res) {
+      if (res.error) {
+        var code = res.error.code || '';
+        var m = res.error.message || '';
+        if (code === 'same_password' || /different from the old/i.test(m)) fail('Yeni şifren eski şifrenle aynı olamaz.');
+        else if (code === 'weak_password' || /weak|easy to guess/i.test(m)) fail('Bu şifre çok zayıf. Daha güçlü bir şifre dene.');
+        else if (/expired|invalid|jwt|session/i.test(m)) { show('s-expired'); return; }
+        else fail('Şifren güncellenemedi. Biraz sonra tekrar dene; sorun devam ederse destek@esnafpilot.com adresine yaz.');
+        save.disabled = false;
+        save.textContent = 'Şifremi güncelle';
+        return;
+      }
+      p1.value = ''; p2.value = '';
+      client.auth.signOut({ scope: 'local' }).catch(function () {});
+      show('s-ok');
+    }).catch(function () {
+      fail('Bağlantı hatası. İnternetini kontrol edip tekrar dene.');
+      save.disabled = false;
+      save.textContent = 'Şifremi güncelle';
+    });
+  });
+})();
+</script>
+</body>
+</html>
