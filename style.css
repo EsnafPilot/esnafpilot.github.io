@@ -131,3 +131,7 @@ a.store{text-decoration:none}
 .more h2{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin:0 0 8px}
 .more ul{margin:0;padding-left:18px}
 .more li{margin:6px 0;font-weight:600}
+
+.store.gp{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.store.gp small{color:var(--bg);opacity:.75}
+.cta .qr{display:block;width:160px;height:160px;margin:0 auto 20px;background:#fff;border-radius:14px;padding:8px}
